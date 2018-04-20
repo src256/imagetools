@@ -53,7 +53,7 @@ module Imagetools
         exit
       end
       opts[:o] ||= "./out"            
-      command = Command.new(opts)
+      command = Iconcreator.new(opts)
       command.run
     end
 

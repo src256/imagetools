@@ -33,7 +33,7 @@ module Imagetools
         puts opt.help
         exit        
       end
-      command = Command.new(opts)
+      command = Imageconcat.new(opts)
       command.run(image_files)
     end
 

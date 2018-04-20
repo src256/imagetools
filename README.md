@@ -25,11 +25,11 @@ PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig gem imagetools
 
 ### iconcreator 
 
+![AppIcon](appicon.png)
+
 ```
 iconcreator -i <ORIGINAL_ICON_FILE> -o <OUTPUT_DIR>
 ```
-
-
 
 ## Usage
 

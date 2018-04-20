@@ -52,7 +52,7 @@ EOM
         exit
       end
       filepaths.each do |filepath|
-        command = Command.new(opts)
+        command = Imagefilter.new(opts)
         command.run(filepath)
       end
     end
