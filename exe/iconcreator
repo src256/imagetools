@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'imagetools/iconcreator'
+
+Imagetools::Iconcreator.run(ARGV)
