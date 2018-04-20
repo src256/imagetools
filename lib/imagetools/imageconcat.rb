@@ -1,11 +1,11 @@
 # coding: utf-8
+
+require 'imagetools/version'
 require 'rmagick'
 require 'optparse'
 
 module Imagetools
   class Imageconcat
-    
-    VERSION = "1.0"
     
     def self.run(argv)
       STDOUT.sync = true

@@ -3,3 +3,4 @@
 require 'imagetools/imagefilter'
 
 Imagetools::Imagefilter.run(ARGV)
+

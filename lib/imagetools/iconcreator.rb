@@ -1,10 +1,13 @@
 # coding: utf-8
+
+require 'imagetools/version'
 require "optparse"
 require "fileutils"
 
 module Imagetools
   class Iconcreator
-  
+    
+    
     ICON_INFOS = [
       ##### iPhone icons #####
       ["20x20", "iphone", "2x"], # iPhone Notification iOS 7-11

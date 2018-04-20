@@ -8,6 +8,15 @@ Image tools.
 gem imagetools
 ```
 
+macOS High Sierra 
+
+```
+brew uninstall imagemagick
+brew install imagemagick@6
+PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig gem imagetools
+```
+
+
 ## Usage
 
 ### imageconcat
