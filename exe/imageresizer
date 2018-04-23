@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'imagetools/imageresizer'
+
+Imagetools::Imageresizer.run(ARGV)
+
+
