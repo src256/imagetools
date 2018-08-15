@@ -7,8 +7,7 @@ require "fileutils"
 module Imagetools
   class Iconcreator
     
-    
-    ICON_INFOS = [
+    IOS_ICON_INFOS = [
       ##### iPhone icons #####
       ["20x20", "iphone", "2x"], # iPhone Notification iOS 7-11
       ["20x20", "iphone", "3x"], #
@@ -29,7 +28,21 @@ module Imagetools
       ["76x76", "ipad", "2x"], #
       ["83.5x83.5", "ipad", "2x"], # iPad Pro App iOS 9-11
       ##### App Store #####
-      ["1024x1024", "ios-marketing", "1x"] # App Store iOS 
+      ["1024x1024", "ios-marketing", "1x"], # App Store iOS
+    ]
+
+    MACOS_ICON_INFOS = [
+      ##### mac #####
+      ["16x16", "mac", "1x"], # Mac 16pt
+      ["16x16", "mac", "2x"], # 
+      ["32x32", "mac", "1x"], # Mac 32pt
+      ["32x32", "mac", "2x"], # 
+      ["128x128", "mac", "1x"], # Mac 128pt
+      ["128x128", "mac", "2x"], #
+      ["256x256", "mac", "1x"], # Mac 256pt
+      ["256x256", "mac", "2x"], #   
+      ["512x512", "mac", "1x"], # Mac 512pt
+      ["512x512", "mac", "2x"], #             
     ]
   
     def self.run(argv)
@@ -44,10 +57,13 @@ module Imagetools
         exit
       end      
       opt.on('-v', '--verbose', 'Verbose message') {|v| opts[:v] = v}
-      opt.on('-i INPUTFILE', '--input=INPUTFILE', 'Original icon file') {|v| opts[:i] = v} 
-      opt.on('-o OUTDIR', '--output=OUTDIR', 'Output dir') {|v| opts[:o] = v}
+      types = ['ios', 'mac']
+      opt.on('-t', '--type', types, types.join("|") + "(default ios)") {|v| opts[:t] = v }
+      opt.on('-i INPUTFILE', '--input=INPUTFILE', 'Original icon file(1024x1024 recommended') {|v| opts[:i] = v} 
+      opt.on('-o OUTDIR', '--output=OUTDIR', 'Output dir(<PROJECT>/Assets.xcassets or any folder)') {|v| opts[:o] = v}
       opt.parse!(argv)
       opts[:i] ||= 'icon.png'
+      opts[:t] ||= types[0]
       if !FileTest.file?(opts[:i])
         puts opt.help
         exit
@@ -78,7 +94,7 @@ module Imagetools
     end
 
     def run
-      puts "Create ios app icons"
+      puts "Create #{@opts[:t]} app icons"
 
       outdir = @opts[:o]
       inputfile = @opts[:i]      
@@ -94,8 +110,10 @@ module Imagetools
         FileUtils.mkdir(appicondir)
       end
 
+      icon_infos = @opts[:t] == 'ios' ? IOS_ICON_INFOS : MACOS_ICON_INFOS
+
       filenames = []
-      ICON_INFOS.each_with_index do |icon_info, index|
+      icon_infos.each_with_index do |icon_info, index|
         point, idiom, scale = icon_info
 #        puts "point=#{point} idiom=#{idiom} scale=#{scale}"
         
@@ -111,7 +129,7 @@ module Imagetools
       str = ""
       str << "{\n"
       str << "  \"images\" : [\n"
-      ICON_INFOS.each_with_index do |icon_info, index|
+      icon_infos.each_with_index do |icon_info, index|
         point, idiom, scale = icon_info
         filename = filenames[index]
         str << "    {\n"
@@ -119,7 +137,7 @@ module Imagetools
         str << "      \"idiom\": \"#{idiom}\",\n"
         str << "      \"filename\": \"#{filename}\",\n"
         str << "      \"scale\": \"#{scale}\"\n"
-        if index < ICON_INFOS.size - 1
+        if index < icon_infos.size - 1
           str << "    },\n"
         else
           str << "    }\n"          
