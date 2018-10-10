@@ -61,8 +61,10 @@ module Imagetools
       json_str = `plutil -convert json #{info_plist} -o - `
       json_data = JSON.parse(json_str)
       icns_base = json_data["CFBundleIconFile"]
-
-      icns_path = File.join(app_path, "Contents/Resources/#{icns_base}.icns")
+      if icns_base !~ /\.icns$/i
+        icns_base << '.icns'
+      end
+      icns_path = File.join(app_path, "Contents/Resources/#{icns_base}")
       icns_path
       
 #      str = File.read(info_plist)
