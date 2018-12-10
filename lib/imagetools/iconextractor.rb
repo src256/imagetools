@@ -58,7 +58,7 @@ module Imagetools
     def get_icns_path(app_path)
       info_plist = File.join(app_path, 'Contents/Info.plist')
       #      puts info_plist
-      json_str = `plutil -convert json #{info_plist} -o - `
+      json_str = `plutil -convert json "#{info_plist}" -o - `
       json_data = JSON.parse(json_str)
       icns_base = json_data["CFBundleIconFile"]
       if icns_base !~ /\.icns$/i
@@ -74,12 +74,10 @@ module Imagetools
 
     def icns_to_png(icns_path)
       outdir = @opts[:o] || '.'
-
       icns_base = File.basename(icns_path)
       png_base = icns_base.sub(/\.icns$/, '.png')
       png_path = File.join(outdir, png_base)
-      
-      cmd = "sips -s format png #{icns_path} --out #{png_path}"
+      cmd = "sips -s format png \"#{icns_path}\" --out #{png_path}"
       puts cmd
       if !system(cmd)
         raise RuntimeError

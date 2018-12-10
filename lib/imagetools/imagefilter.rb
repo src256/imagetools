@@ -84,7 +84,7 @@ EOM
       EXTERNAL_CMDS.each do |cmd|
         args = cmd.split
         cmd_name = args[0]
-        unless cmd_exists?(cmd)
+        unless cmd_exists?(cmd_name)
           puts "No command:  #{cmd_name}"
           return 127
         end
