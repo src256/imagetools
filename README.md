@@ -25,6 +25,10 @@ PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig gem imagetools
 
 ### iconcreator 
 
+iconcreator is command line to genelete ios app icons.
+
+Xcode Version 9.2 AppIcon.
+
 ![AppIcon](appicon.png)
 
 ```
