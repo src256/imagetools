@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'imagetools/imageburst'
+
+Imagetools::Imageburst.run(ARGV)
