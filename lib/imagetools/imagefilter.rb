@@ -7,8 +7,8 @@ require 'optparse'
 module Imagetools
   class Imagefilter
 
-    SCREENSHOT_SEARCH = /s (\d+)-(\d+)-(\d+) (\d+)\.(\d+)\.(\d+).jpg/
-    SCREENSHOT_REPLACE = 's_\1\2\3_\4\5\6.jpg'
+    SCREENSHOT_SEARCH = /s (\d+)-(\d+)-(\d+) (\d+)\.(\d+)\.(\d+)/
+    SCREENSHOT_REPLACE = 's_\1\2\3_\4\5\6'
     RESIZE_CMD = "mogrify -resize 1280x\\> "
     COMPRESS_CMD = "jpegoptim --strip-all --max=90 "
     EXTERNAL_CMDS = [RESIZE_CMD, COMPRESS_CMD]
@@ -105,6 +105,7 @@ EOM
       if exclude_image?(filepath)
         return
       end
+      
       filepath = rename_screenshot(filepath)
       filepath = png2jpg(filepath)
       filepath = resize_jpg(filepath)

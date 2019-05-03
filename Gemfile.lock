@@ -9,16 +9,16 @@ GEM
   specs:
     minitest (5.11.3)
     rake (10.5.0)
-    rmagick (2.16.0)
+    rmagick (3.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 2.0)
   imagetools!
   minitest (~> 5.0)
   rake (~> 10.0)
 
 BUNDLED WITH
-   1.17.1
+   2.0.1

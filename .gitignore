@@ -8,3 +8,5 @@
 /tmp/
 /out/
 /vendor/
+.DS_Store
+

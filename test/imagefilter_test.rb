@@ -6,6 +6,9 @@ class ImagefilterTest < Minitest::Test
     result = Imagetools::Imagefilter.replace_screenshot_filename('s 2016-08-16 16.10.29.jpg')
     assert_equal('s_20160816_161029.jpg', result)
 
+    result = Imagetools::Imagefilter.replace_screenshot_filename('s 2016-08-16 16.10.29.png')
+    assert_equal('s_20160816_161029.png', result)    
+
     result = Imagetools::Imagefilter.replace_screenshot_filename('abc')
     assert_nil(result)    
   end
