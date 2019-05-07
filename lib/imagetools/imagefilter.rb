@@ -9,9 +9,17 @@ module Imagetools
 
     SCREENSHOT_SEARCH = /s (\d+)-(\d+)-(\d+) (\d+)\.(\d+)\.(\d+)/
     SCREENSHOT_REPLACE = 's_\1\2\3_\4\5\6'
+    OTHER_JPG_SEARCH = /\.(large|huge|jpg_large)$/i
+    OTHER_JPG_REPLACE = '.jpg'
+    
+    CONVERT_CMD = "convert"
+    DWEBP_CMD = "dwebp"
     RESIZE_CMD = "mogrify -resize 1280x\\> "
     COMPRESS_CMD = "jpegoptim --strip-all --max=90 "
     EXTERNAL_CMDS = [RESIZE_CMD, COMPRESS_CMD]
+
+    WEBP_SEARCH = /(.+)\.webp/i
+    WEBP_REPLACE = '\1.jpg'
     
     PNG_SEARCH = /(.+)\.png/i
     PNG_REPLACE = '\1.jpg'
@@ -68,10 +76,16 @@ EOM
       filepaths
     end
 
-    def self.replace_screenshot_filename(filename)
-      filename.sub!(SCREENSHOT_SEARCH, SCREENSHOT_REPLACE)
+    def self.replace_image_filename(filename)
+      result = filename.sub!(SCREENSHOT_SEARCH, SCREENSHOT_REPLACE)
+      return result if result
+      filename.sub!(OTHER_JPG_SEARCH, OTHER_JPG_REPLACE)
     end
 
+    def self.replace_webp2jpg(filename)
+      filename.sub!(WEBP_SEARCH, WEBP_REPLACE)
+    end
+    
     def self.replace_png2jpg(filename)
       filename.sub!(PNG_SEARCH, PNG_REPLACE)
     end
@@ -106,7 +120,8 @@ EOM
         return
       end
       
-      filepath = rename_screenshot(filepath)
+      filepath = rename_image(filepath)
+      filepath = webp2jpg(filepath)
       filepath = png2jpg(filepath)
       filepath = resize_jpg(filepath)
       filepath = compress_jpg(filepath)
@@ -123,9 +138,9 @@ EOM
       false
     end
     
-    def rename_screenshot(filepath)
+    def rename_image(filepath)
       fromname = File.basename(filepath)
-      toname = self.class.replace_screenshot_filename(fromname)
+      toname = self.class.replace_image_filename(fromname)
       return filepath if toname.nil?
 
       dir = File.dirname(filepath)
@@ -135,6 +150,22 @@ EOM
       return topath
     end
 
+    def webp2jpg(filepath)
+      fromname = File.basename(filepath)
+      toname = self.class.replace_webp2jpg(fromname)
+      return filepath if toname.nil?
+
+      dir = File.dirname(filepath)
+      topath = File.join(dir, toname)
+      puts "convert: #{filepath} => #{topath}"
+      # dwebp ~/Desktop/1.webp -o ~/Desktop/1.jpg      
+      cmd = "#{DWEBP_CMD} \"#{filepath}\" -o \"#{topath}\""
+      if system(cmd)
+        FileUtils.rm(filepath)
+      end
+      return topath
+    end
+    
     def png2jpg(filepath)
       fromname = File.basename(filepath)
       toname = self.class.replace_png2jpg(fromname)
@@ -144,7 +175,7 @@ EOM
       topath = File.join(dir, toname)
       puts "convert: #{filepath} => #{topath}"
       # convert test.png -background "#ffff00" -flatten test.jpg
-      cmd = "convert \"#{filepath}\" -background \"#ffffff\" -flatten \"#{topath}\""
+      cmd = "#{CONVERT_CMD} \"#{filepath}\" -background \"#ffffff\" -flatten \"#{topath}\""
       if system(cmd)
         FileUtils.rm(filepath)
       end
