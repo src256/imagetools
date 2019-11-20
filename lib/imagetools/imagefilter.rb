@@ -3,12 +3,47 @@
 require 'imagetools/version'
 require 'fileutils'
 require 'optparse'
+require 'yaml'
 
 module Imagetools
-  class Imagefilter
+  class Config
+    FILENAME_SEARCH = 's (\d+)-(\d+)-(\d+) (\d+)\.(\d+)\.(\d+)'
+    FILENAME_REPLACE = 's_\1\2\3_\4\5\6'
+    
+    def initialize(yaml)
+      @yaml = yaml
+      @filename_search1 = config_value("filename", "search1", false) || FILENAME_SEARCH
+      @filename_replace1 = config_value("filename", "replace1", false) || FILENAME_REPLACE
+      @filename_search2 = config_value("filename", "search2", false)
+      @filename_replace2 = config_value("filename", "replace2", false)
+      @filename_search3 = config_value("filename", "search3", false)
+      @filename_replace3 = config_value("filename", "replace3", false) 
+    end
 
-    SCREENSHOT_SEARCH = /s (\d+)-(\d+)-(\d+) (\d+)\.(\d+)\.(\d+)/
-    SCREENSHOT_REPLACE = 's_\1\2\3_\4\5\6'
+    attr_reader :filename_search1, :filename_replace1,
+                :filename_search2, :filename_replace2,
+                :filename_search3, :filename_replace3 
+
+    def filename_patterns
+      [
+        [@filename_search1, @filename_replace1],
+        [@filename_search2, @filename_replace2],
+        [@filename_search3, @filename_replace3],  
+      ]
+    end
+    
+    private
+    def config_value(section, key, require)
+      return nil unless @yaml
+      value = @yaml[section][key]
+      if require && (value.nil? || value.empty?)
+        raise RuntimeError, "#{section}:#{key}: is empty"
+      end
+      value
+    end    
+  end
+  
+  class Imagefilter
     OTHER_JPG_SEARCH = /\.(large|huge|jpg_large)$/i
     OTHER_JPG_REPLACE = '.jpg'
     
@@ -49,7 +84,19 @@ EOM
       opt.on('-v', '--verbose', 'Verbose message') {|v| opts[:v] = v}
       opt.on('-n', '--dry-run', 'Message only') {|v| opts[:n] = v}
       opt.on('-t', '--self-test', 'Run Self Test') {|v| opts[:t] = v}
+      opt.on('-c', '--config', 'Config file'){|v| opts[:c] = v }
       opt.parse!(argv)
+
+      config_file = opts[:c] || "~/.imagefilterrc"
+      config_file = File.expand_path(config_file)
+      p config_file      
+      yaml = nil
+      if FileTest.file?(config_file)
+        yaml = YAML.load_file(config_file)
+        p "aaaaaaaaa"
+      end
+      config = Config.new(yaml)
+      p config.filename_patterns
       if opts[:t]
         ret = selftest
         exit(ret)
@@ -60,7 +107,7 @@ EOM
         exit
       end
       filepaths.each do |filepath|
-        command = Imagefilter.new(opts)
+        command = Imagefilter.new(opts, config)
         command.run(filepath)
       end
     end
@@ -76,18 +123,25 @@ EOM
       filepaths
     end
 
-    def self.replace_image_filename(filename)
-      result = filename.sub!(SCREENSHOT_SEARCH, SCREENSHOT_REPLACE)
-      return result if result
-      filename.sub!(OTHER_JPG_SEARCH, OTHER_JPG_REPLACE)
+    def self.replace_image_filename(filename, patterns)
+      filename = filename.dup      
+      patterns.each do |search, replace|
+        if search && replace
+          p search
+          p replace
+          reg = Regexp.new(search, Regexp::IGNORECASE)
+          filename = filename.sub(reg, replace)
+        end
+      end
+      filename.sub(OTHER_JPG_SEARCH, OTHER_JPG_REPLACE)
     end
 
     def self.replace_webp2jpg(filename)
-      filename.sub!(WEBP_SEARCH, WEBP_REPLACE)
+      filename.sub(WEBP_SEARCH, WEBP_REPLACE)
     end
     
     def self.replace_png2jpg(filename)
-      filename.sub!(PNG_SEARCH, PNG_REPLACE)
+      filename.sub(PNG_SEARCH, PNG_REPLACE)
     end
 
     def self.match_exclude_image?(filename)
@@ -111,8 +165,9 @@ EOM
       `which #{cmd}` != ""
     end
     
-    def initialize(opts)
+    def initialize(opts, config)
       @opts = opts
+      @config = config
     end
 
     def run(filepath)
@@ -140,8 +195,8 @@ EOM
     
     def rename_image(filepath)
       fromname = File.basename(filepath)
-      toname = self.class.replace_image_filename(fromname)
-      return filepath if toname.nil?
+      toname = self.class.replace_image_filename(fromname, @config.filename_patterns)
+      return filepath if fromname == toname
 
       dir = File.dirname(filepath)
       topath = File.join(dir, toname)
@@ -153,7 +208,7 @@ EOM
     def webp2jpg(filepath)
       fromname = File.basename(filepath)
       toname = self.class.replace_webp2jpg(fromname)
-      return filepath if toname.nil?
+      return filepath if fromname == toname
 
       dir = File.dirname(filepath)
       topath = File.join(dir, toname)
@@ -169,7 +224,7 @@ EOM
     def png2jpg(filepath)
       fromname = File.basename(filepath)
       toname = self.class.replace_png2jpg(fromname)
-      return filepath if toname.nil?
+      return filepath if fromname == toname
 
       dir = File.dirname(filepath)
       topath = File.join(dir, toname)

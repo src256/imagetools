@@ -3,10 +3,13 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="rbenv: 2.5.1" jdkType="RUBY_SDK" />
+    <orderEntry type="jdk" jdkName="rbenv: 2.5.5" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="minitest (vbundled(5.11.3)) [path][gem]" type="ruby">
+      <library name="minitest (vbundled(5.11.3)) [path][gem]" type="rubylib">
+        <properties>
+          <option name="version" value="4" />
+        </properties>
         <CLASSES>
           <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/minitest-5.11.3/lib" />
           <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/minitest-5.11.3/test" />
@@ -22,7 +25,10 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="rake (vbundled(10.5.0)) [path][gem]" type="ruby">
+      <library name="rake (vbundled(10.5.0)) [path][gem]" type="rubylib">
+        <properties>
+          <option name="version" value="4" />
+        </properties>
         <CLASSES>
           <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rake-10.5.0/bin" />
           <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rake-10.5.0/doc" />
@@ -47,36 +53,43 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="rmagick (vbundled(2.16.0)) [path][gem]" type="ruby">
+      <library name="rmagick (vbundled(3.1.0)) [path][gem]" type="rubylib">
+        <properties>
+          <option name="version" value="4" />
+        </properties>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/doc" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/ext" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/spec" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/test" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/examples" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/deprecated" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/doc" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/ext" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/lib" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/spec" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/test" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/examples" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/.circleci" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/deprecated" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/doc" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/ext" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/spec" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/test" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/examples" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/deprecated" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/doc" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/ext" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/lib" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/spec" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/test" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/examples" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/.circleci" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/deprecated" />
         </SOURCES>
         <excluded>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/doc" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/ext" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/spec" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/test" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/examples" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-2.16.0/deprecated" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/doc" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/ext" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/spec" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/test" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/examples" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/.circleci" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.5.0/gems/rmagick-3.1.0/deprecated" />
         </excluded>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.16.1, rbenv: 2.5.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v2.0.1, rbenv: 2.5.5) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="minitest (v5.10.3, rbenv: 2.5.5) [gem]" level="application" />
   </component>
 </module>
