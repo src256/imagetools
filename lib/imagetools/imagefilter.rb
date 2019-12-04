@@ -89,14 +89,11 @@ EOM
 
       config_file = opts[:c] || "~/.imagefilterrc"
       config_file = File.expand_path(config_file)
-      p config_file      
       yaml = nil
       if FileTest.file?(config_file)
         yaml = YAML.load_file(config_file)
-        p "aaaaaaaaa"
       end
       config = Config.new(yaml)
-      p config.filename_patterns
       if opts[:t]
         ret = selftest
         exit(ret)
