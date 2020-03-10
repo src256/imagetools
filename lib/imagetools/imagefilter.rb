@@ -50,8 +50,9 @@ module Imagetools
     CONVERT_CMD = "convert"
     DWEBP_CMD = "dwebp"
     RESIZE_CMD = "mogrify -resize 1280x\\> "
+    ROTATE_CMD = "exiftran -ai "
     COMPRESS_CMD = "jpegoptim --strip-all --max=90 "
-    EXTERNAL_CMDS = [RESIZE_CMD, COMPRESS_CMD]
+    EXTERNAL_CMDS = [RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD]
 
     WEBP_SEARCH = /(.+)\.webp/i
     WEBP_REPLACE = '\1.jpg'
@@ -71,6 +72,7 @@ module Imagetools
       opt.separator('Parameters:')
       param =<<EOM
     RESIZE_CMD:   #{RESIZE_CMD}
+    ROTATE_CMD:   #{ROTATE_CMD} 
     COMPRESS_CMD: #{COMPRESS_CMD}
 EOM
       opt.separator(param)
@@ -124,8 +126,6 @@ EOM
       filename = filename.dup      
       patterns.each do |search, replace|
         if search && replace
-          p search
-          p replace
           reg = Regexp.new(search, Regexp::IGNORECASE)
           filename = filename.sub(reg, replace)
         end
@@ -176,6 +176,7 @@ EOM
       filepath = webp2jpg(filepath)
       filepath = png2jpg(filepath)
       filepath = resize_jpg(filepath)
+      filepath = rotate_jpg(filepath)
       filepath = compress_jpg(filepath)
       filepath
     end
@@ -241,6 +242,17 @@ EOM
       end
       puts "resize: #{filepath}"
       cmd = "#{RESIZE_CMD} \"#{filepath}\""
+      system(cmd)
+      return filepath
+    end
+
+    def rotate_jpg(filepath)
+      fromname = File.basename(filepath)
+      unless fromname =~ JPG_SEARCH
+        return filepath 
+      end
+      puts "rotate: #{filepath}"
+      cmd = "#{ROTATE_CMD} \"#{filepath}\""
       system(cmd)
       return filepath
     end
