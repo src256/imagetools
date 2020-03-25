@@ -49,13 +49,14 @@ module Imagetools
     
     CONVERT_CMD = "convert"
     DWEBP_CMD = "dwebp"
-    RESIZE_CMD = "mogrify -resize 1280x\\> "
+    #    RESIZE_CMD = "mogrify -resize 1280x\\> "
+    RESIZE_CMD = "mogrify -background white -resize 1280x\\> "    
     ROTATE_CMD = "exiftran -ai "
     COMPRESS_CMD = "jpegoptim --strip-all --max=90 "
     EXTERNAL_CMDS = [RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD]
 
     WEBP_SEARCH = /(.+)\.webp/i
-    WEBP_REPLACE = '\1.jpg'
+    WEBP_REPLACE = '\1.png'
     
     PNG_SEARCH = /(.+)\.png/i
     PNG_REPLACE = '\1.jpg'
@@ -133,7 +134,7 @@ EOM
       filename.sub(OTHER_JPG_SEARCH, OTHER_JPG_REPLACE)
     end
 
-    def self.replace_webp2jpg(filename)
+    def self.replace_webp2png(filename)
       filename.sub(WEBP_SEARCH, WEBP_REPLACE)
     end
     
@@ -173,7 +174,7 @@ EOM
       end
       
       filepath = rename_image(filepath)
-      filepath = webp2jpg(filepath)
+      filepath = webp2png(filepath)
       filepath = png2jpg(filepath)
       filepath = resize_jpg(filepath)
       filepath = rotate_jpg(filepath)
@@ -203,9 +204,9 @@ EOM
       return topath
     end
 
-    def webp2jpg(filepath)
+    def webp2png(filepath)
       fromname = File.basename(filepath)
-      toname = self.class.replace_webp2jpg(fromname)
+      toname = self.class.replace_webp2png(fromname)
       return filepath if fromname == toname
 
       dir = File.dirname(filepath)
