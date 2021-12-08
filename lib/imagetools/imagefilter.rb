@@ -44,7 +44,7 @@ module Imagetools
   end
   
   class Imagefilter
-    OTHER_JPG_SEARCH = /\.(large|huge|jpg_large)$/i
+    OTHER_JPG_SEARCH = /\.(large|huge|jpg_large|JPG)$/i
     OTHER_JPG_REPLACE = '.jpg'
     
     CONVERT_CMD = "convert"
@@ -200,7 +200,10 @@ EOM
       dir = File.dirname(filepath)
       topath = File.join(dir, toname)
       puts "rename: #{filepath} => #{topath}"
-      FileUtils.mv(filepath, topath) unless @opts[:n]
+      #      FileUtils.mv(filepath, topath, :force => true) unless @opts[:n]
+      # aaa.JPG => aaa.jpgを成功させるためにFIleUtils.mv(same fileエラーがでる)ではなくmvを使う
+      cmd = "mv #{filepath} #{topath}"
+      system(cmd)
       return topath
     end
 
