@@ -202,7 +202,7 @@ EOM
       puts "rename: #{filepath} => #{topath}"
       #      FileUtils.mv(filepath, topath, :force => true) unless @opts[:n]
       # aaa.JPG => aaa.jpgを成功させるためにFIleUtils.mv(same fileエラーがでる)ではなくmvを使う
-      cmd = "mv #{filepath} #{topath}"
+      cmd = "mv \"#{filepath}\" \"#{topath}\""
       system(cmd)
       return topath
     end
