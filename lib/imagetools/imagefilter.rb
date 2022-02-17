@@ -61,6 +61,9 @@ module Imagetools
     PNG_SEARCH = /(.+)\.png/i
     PNG_REPLACE = '\1.jpg'
     JPG_SEARCH = /(.+)\.jpe?g/i
+    HEIC_SEARCH = /(.+)\.heic/i
+    HEIC_REPLACE = '\1.jpg'
+    
     EXCLUDE_PAT = /^_/ # 先頭が"_"の場合は除外
     
     def self.run(argv)
@@ -142,6 +145,10 @@ EOM
       filename.sub(PNG_SEARCH, PNG_REPLACE)
     end
 
+    def self.replace_heic2jpg(filename)
+      filename.sub(HEIC_SEARCH, HEIC_REPLACE)
+    end
+
     def self.match_exclude_image?(filename)
       filename =~ EXCLUDE_PAT
     end
@@ -172,10 +179,10 @@ EOM
       if exclude_image?(filepath)
         return
       end
-      
       filepath = rename_image(filepath)
       filepath = webp2png(filepath)
       filepath = png2jpg(filepath)
+      filepath = heic2jpg(filepath)      
       filepath = resize_jpg(filepath)
       filepath = rotate_jpg(filepath)
       filepath = compress_jpg(filepath)
@@ -237,6 +244,23 @@ EOM
         FileUtils.rm(filepath)
       end
       return topath
+    end
+
+    def heic2jpg(filepath)
+      fromname = File.basename(filepath)
+      toname = self.class.replace_heic2jpg(fromname)
+#      puts "heic2jpg #{fromname}=>#{toname}"      
+      return filepath if fromname == toname
+
+      dir = File.dirname(filepath)
+      topath = File.join(dir, toname)
+      puts "convert: #{filepath} => #{topath}"
+      # convert ~/Desktop/test.heic -o ~/Desktop/test.jpg
+      cmd = "#{CONVERT_CMD} \"#{filepath}\" \"#{topath}\""
+      if system(cmd)
+        FileUtils.rm(filepath)
+      end
+      return topath      
     end
 
     def resize_jpg(filepath)
