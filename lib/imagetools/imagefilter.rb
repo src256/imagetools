@@ -9,20 +9,45 @@ module Imagetools
   class Config
     FILENAME_SEARCH = 's (\d+)-(\d+)-(\d+) (\d+)\.(\d+)\.(\d+)'
     FILENAME_REPLACE = 's_\1\2\3_\4\5\6'
-    
-    def initialize(yaml)
-      @yaml = yaml
-      @filename_search1 = config_value("filename", "search1", false) || FILENAME_SEARCH
-      @filename_replace1 = config_value("filename", "replace1", false) || FILENAME_REPLACE
-      @filename_search2 = config_value("filename", "search2", false)
-      @filename_replace2 = config_value("filename", "replace2", false)
-      @filename_search3 = config_value("filename", "search3", false)
-      @filename_replace3 = config_value("filename", "replace3", false) 
+    RESIZE_WIDTH = 1280
+
+    def self.create_from_yaml(yaml)
+      config = Config.new
+      config.filename_search1 = config_value(yaml, "filename", "search1", false)
+      config.filename_replace1 = config_value(yaml, "filename", "replace1", false)
+      config.filename_search2 = config_value(yaml, "filename", "search2", false)
+      config.filename_replace2 = config_value(yaml, "filename", "replace2", false)
+      config.filename_search3 = config_value(yaml, "filename", "search3", false)
+      config.filename_replace3 = config_value(yaml, "filename", "replace3", false)
+      config.resize_width = config_value(yaml, "resize", "width", false)
+      config.init_default
+      config
     end
 
-    attr_reader :filename_search1, :filename_replace1,
-                :filename_search2, :filename_replace2,
-                :filename_search3, :filename_replace3 
+
+    def self.config_value(yaml, section, key, require)
+      return nil unless yaml
+      return nil unless yaml[section]
+      value = yaml[section][key]
+      if require && (value.nil? || value.empty?)
+        raise RuntimeError, "#{section}:#{key}: is empty"
+      end
+      value
+    end        
+    
+    def initialize
+    end
+
+    def init_default
+      @filename_search1 ||= FILENAME_SEARCH
+      @filename_replace1 ||= FILENAME_REPLACE
+      @resize_width ||= RESIZE_WIDTH      
+    end
+
+    attr_accessor :filename_search1, :filename_replace1,
+                  :filename_search2, :filename_replace2,
+                  :filename_search3, :filename_replace3
+    attr_accessor :resize_width
 
     def filename_patterns
       [
@@ -31,16 +56,6 @@ module Imagetools
         [@filename_search3, @filename_replace3],  
       ]
     end
-    
-    private
-    def config_value(section, key, require)
-      return nil unless @yaml
-      value = @yaml[section][key]
-      if require && (value.nil? || value.empty?)
-        raise RuntimeError, "#{section}:#{key}: is empty"
-      end
-      value
-    end    
   end
   
   class Imagefilter
@@ -49,8 +64,7 @@ module Imagetools
     
     CONVERT_CMD = "convert"
     DWEBP_CMD = "dwebp"
-    #    RESIZE_CMD = "mogrify -resize 1280x\\> "
-    RESIZE_CMD = "mogrify -background white -resize 1280x\\> "    
+    RESIZE_CMD = "mogrify -background white -resize %dx\\> "
     ROTATE_CMD = "exiftran -ai "
     COMPRESS_CMD = "jpegoptim --strip-all --max=90 "
     EXTERNAL_CMDS = [RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD]
@@ -99,7 +113,7 @@ EOM
       if FileTest.file?(config_file)
         yaml = YAML.load_file(config_file)
       end
-      config = Config.new(yaml)
+      config = Config.create_from_yaml(yaml)
       if opts[:t]
         ret = selftest
         exit(ret)
@@ -269,7 +283,8 @@ EOM
         return filepath 
       end
       puts "resize: #{filepath}"
-      cmd = "#{RESIZE_CMD} \"#{filepath}\""
+      resize_cmd = sprintf(RESIZE_CMD, @config.resize_width)
+      cmd = "#{resize_cmd} \"#{filepath}\""
       system(cmd)
       return filepath
     end

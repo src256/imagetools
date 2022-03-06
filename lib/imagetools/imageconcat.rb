@@ -26,7 +26,7 @@ module Imagetools
       opt.on('-v', '--verbose', 'Verbose message') {|v| opts[:v] = v}
       opt.on('--dry-run', 'Message only') {|v| opts[:dry_run] = v}
       opt.on('-o OUTNAME', '--output=OUTNAME', 'Output file') {|v| opts[:o] = v}
-      opt.on('-n NUM', '--number=NUM', 'Cancat image Number') {|v| opts[:n] = v.to_i}
+      opt.on('-n NUM', '--number=NUM', 'Concat image number') {|v| opts[:n] = v.to_i}
       opt.parse!(argv)
       image_files = get_image_files(opts, argv)
       if image_files.size < 2
@@ -89,14 +89,20 @@ module Imagetools
     def concat_images(image_files, output_file)
       puts image_files.join("+") + "=#{output_file}"
 
+      # 結果の画像リスト
       result_image_list = Magick::ImageList.new
+      
       image_files.each do |image_file|
-        #background_colorとflatten_imagesを組み合わせて背景色を指定
+        # 個別画像の背景色を白に変換
+        # 一気に行く方法がないので、ImageListを作成しbackground_colorとflatten_imagesを組み合わる。
         image_list = Magick::ImageList.new(image_file) {self.background_color = 'white'}
         image = image_list.flatten_images
+
+        # 結果の画像リストに追加
         result_image_list << image
       end
-      
+
+      #append(false)で横方向に結合
       result = result_image_list.append(false)      
 
       width = result.columns
