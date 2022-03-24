@@ -95,7 +95,9 @@ module Imagetools
       image_files.each do |image_file|
         # 個別画像の背景色を白に変換
         # 一気に行く方法がないので、ImageListを作成しbackground_colorとflatten_imagesを組み合わる。
-        image_list = Magick::ImageList.new(image_file) {self.background_color = 'white'}
+        #        image_list = Magick::ImageList.new(image_file) {self.background_color = 'white'}
+        # 2022/03/24「passing a block without an image argument is deprecate」対策。 https://github.com/rmagick/rmagick/blob/main/CHANGELOG.md RMagick 4.2.0
+        image_list = Magick::ImageList.new(image_file) {|image| image.background_color = 'white'} 
         image = image_list.flatten_images
 
         # 結果の画像リストに追加
