@@ -30,6 +30,7 @@ module Imagetools
       opt.parse!(argv)
       image_files = get_image_files(opts, argv)
       if image_files.size < 2
+        puts "Cannot find image files(#{image_files.size})\n"
         puts opt.help
         exit        
       end
@@ -53,9 +54,9 @@ module Imagetools
       end
       if dir
         concat_number = opts[:n] || 2
-        # ディレクトリが指定されていた場合、指定ディレクトリ内のIMG_ファイルの最新n個を対象とする
+        # ディレクトリが指定されていた場合、指定ディレクトリ内の画像ファイルの最新n個を対象とする
         # 最新の基準は(ファイル名基準)
-        match_files = Dir.glob("#{dir}/IMG_*.{jpg,jpeg,png}", File::FNM_CASEFOLD).sort
+        match_files = Dir.glob("#{dir}/*.{jpg,jpeg,png}", File::FNM_CASEFOLD).sort
         # 後ろからn個を取得(小さい方の数とする)
         count = [match_files.size, concat_number].min
         image_files = match_files[-count..-1]

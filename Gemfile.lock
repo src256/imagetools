@@ -7,9 +7,11 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    minitest (5.15.0)
+    minitest (5.16.3)
+    pkg-config (1.5.1)
     rake (13.0.6)
-    rmagick (4.2.4)
+    rmagick (5.1.0)
+      pkg-config (~> 1.4)
 
 PLATFORMS
   ruby
@@ -21,4 +23,4 @@ DEPENDENCIES
   rake (~> 13.0)
 
 BUNDLED WITH
-   2.3.8
+   2.3.19

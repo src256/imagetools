@@ -67,7 +67,7 @@ module Imagetools
     RESIZE_CMD = "mogrify -background white -resize %dx\\> "
     ROTATE_CMD = "exiftran -ai "
     COMPRESS_CMD = "jpegoptim --strip-all --max=90 "
-    EXTERNAL_CMDS = [RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD]
+    EXTERNAL_CMDS = [CONVERT_CMD, RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD, DWEBP_CMD]
 
     WEBP_SEARCH = /(.+)\.webp/i
     WEBP_REPLACE = '\1.png'
