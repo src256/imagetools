@@ -58,7 +58,7 @@ module Imagetools
       end      
       opt.on('-v', '--verbose', 'Verbose message') {|v| opts[:v] = v}
       types = ['ios', 'mac']
-      opt.on('-t', '--type', types, types.join("|") + "(default ios)") {|v| opts[:t] = v }
+      opt.on('-t', '--type=OSTYPE', types, types.join("|") + "(default ios)") {|v| opts[:t] = v }
       opt.on('-i INPUTFILE', '--input=INPUTFILE', 'Original icon file(1024x1024 recommended') {|v| opts[:i] = v} 
       opt.on('-o OUTDIR', '--output=OUTDIR', 'Output dir(<PROJECT>/Assets.xcassets or any folder)') {|v| opts[:o] = v}
       opt.parse!(argv)

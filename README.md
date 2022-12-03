@@ -123,13 +123,19 @@ Hazelなどの自動化ツールと組みあせると便利です。
 
 ### iconcreator 
 
-iOSアプリ用のアイコンファイルを生成します。
+
+オリジナル画像からiOS/macOSアプリ用のアイコンファイルを一気に生成します。リサイズするため、オリジナル画像は1024x1024以上の大きなサイズのものを準備します。
+
 
 ![AppIcon](appicon.png)
 
 ```
-iconcreator -i <ORIGINAL_ICON_FILE> -o <OUTPUT_DIR>
+iconcreator -t ios -i icon.png -o .
 ```
+
+実行すると、-oで指定した出力フォルダ内にAppIcon.appiconsetフォルダ、および必要なアイコンファイルが出力されます。このフォルダをXcodeプロジェクトのAssets.xcassetsフォル内にコピーします。Assets.xcassets内に存在する既存のAppIcon.appiconsetを起きえます。
+
+自動的にアプリのアイコンとして認識されるはずです。
 
 
 
