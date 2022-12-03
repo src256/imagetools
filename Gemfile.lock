@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    imagetools (1.6.0)
+    imagetools (1.6.1)
       rmagick
 
 GEM
