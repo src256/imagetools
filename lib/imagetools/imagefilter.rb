@@ -64,13 +64,14 @@ module Imagetools
     
     CONVERT_CMD = "convert"
     DWEBP_CMD = "dwebp"
+    CWEBP_CMD = "cwebp"
     RESIZE_CMD = "mogrify -background white -resize %dx\\> "
     ROTATE_CMD = "exiftran -ai "
     COMPRESS_CMD = "jpegoptim --strip-all --max=90 "
-    EXTERNAL_CMDS = [CONVERT_CMD, RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD, DWEBP_CMD]
+    EXTERNAL_CMDS = [CONVERT_CMD, RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD, DWEBP_CMD, CWEBP_CMD]
 
     WEBP_SEARCH = /(.+)\.webp/i
-    WEBP_REPLACE = '\1.png'
+    WEBP_REPLACE = '\1.webp'
     
     PNG_SEARCH = /(.+)\.png/i
     PNG_REPLACE = '\1.jpg'
@@ -151,21 +152,34 @@ EOM
       filename.sub(OTHER_JPG_SEARCH, OTHER_JPG_REPLACE)
     end
 
-    def self.replace_webp2png(filename)
-      filename.sub(WEBP_SEARCH, WEBP_REPLACE)
-    end
+#    def self.replace_webp2png(filename)
+#      filename.sub(WEBP_SEARCH, WEBP_REPLACE)
+#    end
     
-    def self.replace_png2jpg(filename)
-      filename.sub(PNG_SEARCH, PNG_REPLACE)
-    end
+#    def self.replace_png2jpg(filename)
+#      filename.sub(PNG_SEARCH, PNG_REPLACE)
+#    end
 
     def self.replace_heic2jpg(filename)
       filename.sub(HEIC_SEARCH, HEIC_REPLACE)
     end
 
+    def self.replace_image2webp(filename)
+      # PNGとJPGに対応(WEBPはそのまま)
+      str = filename.dup
+      if str.sub!(PNG_SEARCH, WEBP_REPLACE)
+        return str
+      end
+      if str.sub!(JPG_SEARCH, WEBP_REPLACE)
+        return str
+      end
+      return str
+    end
+
     def self.match_exclude_image?(filename)
       filename =~ EXCLUDE_PAT
     end
+
 
     def self.selftest
       EXTERNAL_CMDS.each do |cmd|
@@ -193,13 +207,24 @@ EOM
       if exclude_image?(filepath)
         return
       end
+      
+      # ファイル名変換
       filepath = rename_image(filepath)
-      filepath = webp2png(filepath)
-      filepath = png2jpg(filepath)
-      filepath = heic2jpg(filepath)      
-      filepath = resize_jpg(filepath)
+
+      #      filepath = webp2png(filepath)
+      #      filepath = png2jpg(filepath)
+
+      # HEICをJPEGに
+      filepath = heic2jpg(filepath)
+
+      # JPEGの回転
       filepath = rotate_jpg(filepath)
-      filepath = compress_jpg(filepath)
+
+      # JPEG/PNG/WEBP 画像のリサイズ
+      filepath = resize_image(filepath)
+      
+      # JPEG/PNGをWEBPに変換(WEBPはそのまま)
+      filepath = image2webp(filepath)
       filepath
     end
 
@@ -228,37 +253,37 @@ EOM
       return topath
     end
 
-    def webp2png(filepath)
-      fromname = File.basename(filepath)
-      toname = self.class.replace_webp2png(fromname)
-      return filepath if fromname == toname
+    # def webp2png(filepath)
+    #   fromname = File.basename(filepath)
+    #   toname = self.class.replace_webp2png(fromname)
+    #   return filepath if fromname == toname
 
-      dir = File.dirname(filepath)
-      topath = File.join(dir, toname)
-      puts "convert: #{filepath} => #{topath}"
-      # dwebp ~/Desktop/1.webp -o ~/Desktop/1.jpg      
-      cmd = "#{DWEBP_CMD} \"#{filepath}\" -o \"#{topath}\""
-      if system(cmd)
-        FileUtils.rm(filepath)
-      end
-      return topath
-    end
+    #   dir = File.dirname(filepath)
+    #   topath = File.join(dir, toname)
+    #   puts "convert: #{filepath} => #{topath}"
+    #   # dwebp ~/Desktop/1.webp -o ~/Desktop/1.jpg      
+    #   cmd = "#{DWEBP_CMD} \"#{filepath}\" -o \"#{topath}\""
+    #   if system(cmd)
+    #     FileUtils.rm(filepath)
+    #   end
+    #   return topath
+    # end
     
-    def png2jpg(filepath)
-      fromname = File.basename(filepath)
-      toname = self.class.replace_png2jpg(fromname)
-      return filepath if fromname == toname
+    # def png2jpg(filepath)
+    #   fromname = File.basename(filepath)
+    #   toname = self.class.replace_png2jpg(fromname)
+    #   return filepath if fromname == toname
 
-      dir = File.dirname(filepath)
-      topath = File.join(dir, toname)
-      puts "convert: #{filepath} => #{topath}"
-      # convert test.png -background "#ffff00" -flatten test.jpg
-      cmd = "#{CONVERT_CMD} \"#{filepath}\" -background \"#ffffff\" -flatten \"#{topath}\""
-      if system(cmd)
-        FileUtils.rm(filepath)
-      end
-      return topath
-    end
+    #   dir = File.dirname(filepath)
+    #   topath = File.join(dir, toname)
+    #   puts "convert: #{filepath} => #{topath}"
+    #   # convert test.png -background "#ffff00" -flatten test.jpg
+    #   cmd = "#{CONVERT_CMD} \"#{filepath}\" -background \"#ffffff\" -flatten \"#{topath}\""
+    #   if system(cmd)
+    #     FileUtils.rm(filepath)
+    #   end
+    #   return topath
+    # end
 
     def heic2jpg(filepath)
       fromname = File.basename(filepath)
@@ -277,9 +302,11 @@ EOM
       return topath      
     end
 
-    def resize_jpg(filepath)
+    def resize_image(filepath)
       fromname = File.basename(filepath)
-      unless fromname =~ JPG_SEARCH
+      # .JPEG .PNG .WEBPを許す
+      is_image = (fromname =~ JPG_SEARCH || fromname =~ PNG_SEARCH || fromname =~ WEBP_SEARCH)
+      unless is_image
         return filepath 
       end
       puts "resize: #{filepath}"
@@ -300,15 +327,31 @@ EOM
       return filepath
     end
     
-    def compress_jpg(filepath)
-      fromname = File.basename(filepath)
-      unless fromname =~ JPG_SEARCH
-        return filepath 
-      end
-      puts "compress: #{filepath}"
-      cmd = "#{COMPRESS_CMD} \"#{filepath}\""
-      system(cmd)
-      return filepath
-    end
+    # def compress_jpg(filepath)
+    #   fromname = File.basename(filepath)
+    #   unless fromname =~ JPG_SEARCH
+    #     return filepath 
+    #   end
+    #   puts "compress: #{filepath}"
+    #   cmd = "#{COMPRESS_CMD} \"#{filepath}\""
+    #   system(cmd)
+    #   return filepath
+    # end
+    
+     def image2webp(filepath)
+       fromname = File.basename(filepath)
+       toname = self.class.replace_image2webp(fromname)
+       return filepath if fromname == toname
+       dir = File.dirname(filepath)
+       topath = File.join(dir, toname)
+       puts "image2webp: #{filepath} => #{topath}"
+       # cwebp ~/Desktop/1.webp -o ~/Desktop/1.jpg
+       cmd = "#{CWEBP_CMD} -quiet \"#{filepath}\" -o \"#{topath}\""
+       #       puts cmd
+       if system(cmd)
+         FileUtils.rm(filepath)
+       end
+       return topath
+     end
   end
 end
