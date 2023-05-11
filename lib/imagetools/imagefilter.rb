@@ -71,14 +71,16 @@ module Imagetools
     EXTERNAL_CMDS = [CONVERT_CMD, RESIZE_CMD, ROTATE_CMD, COMPRESS_CMD, DWEBP_CMD, CWEBP_CMD]
 
     WEBP_SEARCH = /(.+)\.webp/i
-    WEBP_REPLACE = '\1.webp'
-    
+
     PNG_SEARCH = /(.+)\.png/i
-    PNG_REPLACE = '\1.jpg'
     JPG_SEARCH = /(.+)\.jpe?g/i
     HEIC_SEARCH = /(.+)\.heic/i
-    HEIC_REPLACE = '\1.jpg'
-    
+
+    WEBP_REPLACE = '\1.webp'
+    JPG_REPLACE = '\1.jpg'
+    PNG_REPLACE = '\1.png'
+
+
     EXCLUDE_PAT = /^_/ # 先頭が"_"の場合は除外
     
     def self.run(argv)
@@ -106,7 +108,10 @@ EOM
       opt.on('-n', '--dry-run', 'Message only') {|v| opts[:n] = v}
       opt.on('-t', '--self-test', 'Run Self Test') {|v| opts[:t] = v}
       opt.on('-c', '--config', 'Config file'){|v| opts[:c] = v }
+      types = ['jpg', 'wepp']
+      opt.on('-output-type=OUTPUTTYPE', types, types.join("|") + "(default jpg)") {|v| opts[:o] = v}
       opt.parse!(argv)
+      opts[:o] ||= types[0]
 
       config_file = opts[:c] || "~/.imagefilterrc"
       config_file = File.expand_path(config_file)
@@ -152,16 +157,16 @@ EOM
       filename.sub(OTHER_JPG_SEARCH, OTHER_JPG_REPLACE)
     end
 
-#    def self.replace_webp2png(filename)
-#      filename.sub(WEBP_SEARCH, WEBP_REPLACE)
-#    end
+   def self.replace_webp2png(filename)
+     filename.sub(WEBP_SEARCH, PNG_REPLACE)
+   end
     
-#    def self.replace_png2jpg(filename)
-#      filename.sub(PNG_SEARCH, PNG_REPLACE)
-#    end
+   def self.replace_png2jpg(filename)
+     filename.sub(PNG_SEARCH, JPG_REPLACE)
+   end
 
     def self.replace_heic2jpg(filename)
-      filename.sub(HEIC_SEARCH, HEIC_REPLACE)
+      filename.sub(HEIC_SEARCH, JPG_REPLACE)
     end
 
     def self.replace_image2webp(filename)
@@ -222,9 +227,16 @@ EOM
 
       # JPEG/PNG/WEBP 画像のリサイズ
       filepath = resize_image(filepath)
-      
-      # JPEG/PNGをWEBPに変換(WEBPはそのまま)
-      filepath = image2webp(filepath)
+      if @opts[:o] == 'webp'
+        # JPEG/PNGをWEBPに変換(WEBPはそのまま)
+       filepath = image2webp(filepath)
+      else
+        # PNGとWebPをJPEGに変換
+        filepath = webp2png(filepath)
+        filepath = png2jpg(filepath)
+        filepath = compress_jpg(filepath)
+      end
+
       filepath
     end
 
@@ -253,37 +265,37 @@ EOM
       return topath
     end
 
-    # def webp2png(filepath)
-    #   fromname = File.basename(filepath)
-    #   toname = self.class.replace_webp2png(fromname)
-    #   return filepath if fromname == toname
+    def webp2png(filepath)
+      fromname = File.basename(filepath)
+      toname = self.class.replace_webp2png(fromname)
+      return filepath if fromname == toname
 
-    #   dir = File.dirname(filepath)
-    #   topath = File.join(dir, toname)
-    #   puts "convert: #{filepath} => #{topath}"
-    #   # dwebp ~/Desktop/1.webp -o ~/Desktop/1.jpg      
-    #   cmd = "#{DWEBP_CMD} \"#{filepath}\" -o \"#{topath}\""
-    #   if system(cmd)
-    #     FileUtils.rm(filepath)
-    #   end
-    #   return topath
-    # end
+      dir = File.dirname(filepath)
+      topath = File.join(dir, toname)
+      puts "convert: #{filepath} => #{topath}"
+      # dwebp ~/Desktop/1.webp -o ~/Desktop/1.jpg
+      cmd = "#{DWEBP_CMD} \"#{filepath}\" -o \"#{topath}\""
+      if system(cmd)
+        FileUtils.rm(filepath)
+      end
+      return topath
+    end
     
-    # def png2jpg(filepath)
-    #   fromname = File.basename(filepath)
-    #   toname = self.class.replace_png2jpg(fromname)
-    #   return filepath if fromname == toname
+    def png2jpg(filepath)
+      fromname = File.basename(filepath)
+      toname = self.class.replace_png2jpg(fromname)
+      return filepath if fromname == toname
 
-    #   dir = File.dirname(filepath)
-    #   topath = File.join(dir, toname)
-    #   puts "convert: #{filepath} => #{topath}"
-    #   # convert test.png -background "#ffff00" -flatten test.jpg
-    #   cmd = "#{CONVERT_CMD} \"#{filepath}\" -background \"#ffffff\" -flatten \"#{topath}\""
-    #   if system(cmd)
-    #     FileUtils.rm(filepath)
-    #   end
-    #   return topath
-    # end
+      dir = File.dirname(filepath)
+      topath = File.join(dir, toname)
+      puts "convert: #{filepath} => #{topath}"
+      # convert test.png -background "#ffff00" -flatten test.jpg
+      cmd = "#{CONVERT_CMD} \"#{filepath}\" -background \"#ffffff\" -flatten \"#{topath}\""
+      if system(cmd)
+        FileUtils.rm(filepath)
+      end
+      return topath
+    end
 
     def heic2jpg(filepath)
       fromname = File.basename(filepath)
@@ -327,16 +339,16 @@ EOM
       return filepath
     end
     
-    # def compress_jpg(filepath)
-    #   fromname = File.basename(filepath)
-    #   unless fromname =~ JPG_SEARCH
-    #     return filepath 
-    #   end
-    #   puts "compress: #{filepath}"
-    #   cmd = "#{COMPRESS_CMD} \"#{filepath}\""
-    #   system(cmd)
-    #   return filepath
-    # end
+    def compress_jpg(filepath)
+      fromname = File.basename(filepath)
+      unless fromname =~ JPG_SEARCH
+        return filepath
+      end
+      puts "compress: #{filepath}"
+      cmd = "#{COMPRESS_CMD} \"#{filepath}\""
+      system(cmd)
+      return filepath
+    end
     
      def image2webp(filepath)
        fromname = File.basename(filepath)
