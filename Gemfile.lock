@@ -1,16 +1,16 @@
 PATH
   remote: .
   specs:
-    imagetools (1.8.0)
+    imagetools (1.8.1)
       rmagick
 
 GEM
   remote: https://rubygems.org/
   specs:
-    minitest (5.18.0)
-    pkg-config (1.5.1)
-    rake (13.0.6)
-    rmagick (5.2.0)
+    minitest (5.20.0)
+    pkg-config (1.5.6)
+    rake (13.1.0)
+    rmagick (5.3.0)
       pkg-config (~> 1.4)
 
 PLATFORMS
@@ -23,4 +23,4 @@ DEPENDENCIES
   rake (~> 13.0)
 
 BUNDLED WITH
-   2.4.9
+   2.4.20
