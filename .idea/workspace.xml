@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b197c64f-57f8-4389-ab8d-dc9fe3cb05ba" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/imagetools/imagefilter.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/imagetools/imagefilter.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/imagetools/version.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/imagetools/version.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -296,7 +294,8 @@
       <workItem from="1678251388689" duration="1190000" />
       <workItem from="1682834450840" duration="2235000" />
       <workItem from="1682836714784" duration="506000" />
-      <workItem from="1683773814394" duration="2723000" />
+      <workItem from="1683773814394" duration="3488000" />
+      <workItem from="1684478919096" duration="769000" />
     </task>
     <servers />
   </component>
@@ -312,6 +311,17 @@
         <option value="Default.Subject" />
         <option value="Space.CommitStatus" />
       </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="XDebuggerManager">
