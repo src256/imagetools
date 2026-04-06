@@ -108,8 +108,8 @@ EOM
       opt.on('-n', '--dry-run', 'Message only') {|v| opts[:n] = v}
       opt.on('-t', '--self-test', 'Run Self Test') {|v| opts[:t] = v}
       opt.on('-c', '--config', 'Config file'){|v| opts[:c] = v }
-      types = ['jpg', 'wepp']
-      opt.on('-output-type=OUTPUTTYPE', types, types.join("|") + "(default jpg)") {|v| opts[:o] = v}
+      types = ['jpg', 'webp']
+      opt.on('--output-type=OUTPUTTYPE', types, types.join("|") + "(default jpg)") {|v| opts[:o] = v}
       opt.parse!(argv)
       opts[:o] ||= types[0]
 

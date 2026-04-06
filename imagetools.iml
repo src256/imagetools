@@ -1,96 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="RUBY_MODULE" version="4">
+  <component name="ModuleRunConfigurationManager">
+    <shared />
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="rbenv: 3.0.4" jdkType="RUBY_SDK" />
+    <orderEntry type="jdk" jdkName="rbenv: 3.1.3" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="minitest (vbundled(5.18.0)) [path][gem]" type="rubylib">
-        <properties>
-          <option name="version" value="4" />
-        </properties>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/minitest-5.18.0/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/minitest-5.18.0/test" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/minitest-5.18.0/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/minitest-5.18.0/test" />
-        </SOURCES>
-        <excluded>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/minitest-5.18.0/test" />
-        </excluded>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="pkg-config (vbundled(1.5.1)) [path][gem]" type="rubylib">
-        <properties>
-          <option name="version" value="4" />
-        </properties>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/pkg-config-1.5.1/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/pkg-config-1.5.1/test" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/pkg-config-1.5.1/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/pkg-config-1.5.1/test" />
-        </SOURCES>
-        <excluded>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/pkg-config-1.5.1/test" />
-        </excluded>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="rake (vbundled(13.0.6)) [path][gem]" type="rubylib">
-        <properties>
-          <option name="version" value="4" />
-        </properties>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/doc" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/exe" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/lib" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/doc" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/exe" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/lib" />
-        </SOURCES>
-        <excluded>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/doc" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rake-13.0.6/exe" />
-        </excluded>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="rmagick (vbundled(5.2.0)) [path][gem]" type="rubylib">
-        <properties>
-          <option name="version" value="4" />
-        </properties>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/ext" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/.github" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/.devcontainer" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/ext" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/lib" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/.github" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/.devcontainer" />
-        </SOURCES>
-        <excluded>
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/ext" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/.github" />
-          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/3.0.0/gems/rmagick-5.2.0/.devcontainer" />
-        </excluded>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v2.4.9, rbenv: 3.0.4) [gem]" level="application" />
   </component>
   <component name="RakeTasksCache">
     <option name="myRootTask">
@@ -111,6 +28,39 @@
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Create tag v1.7.0 and build and push imagetools-1.7.0.gem to rubygems.org" fullCommand="release[remote]" id="release[remote]" />
+          <RakeTaskImpl description="Run tests" fullCommand="test" id="test" />
+          <RakeTaskImpl description="" fullCommand="default" id="default" />
+          <RakeTaskImpl description="" fullCommand="release" id="release" />
+          <RakeTaskImpl id="release">
+            <subtasks>
+              <RakeTaskImpl description="" fullCommand="release:guard_clean" id="guard_clean" />
+              <RakeTaskImpl description="" fullCommand="release:rubygem_push" id="rubygem_push" />
+              <RakeTaskImpl description="" fullCommand="release:source_control_push" id="source_control_push" />
+            </subtasks>
+          </RakeTaskImpl>
+        </subtasks>
+      </RakeTaskImpl>
+    </option>
+  </component>
+  <component name="RakeTasksCache-v2">
+    <option name="myRootTask">
+      <RakeTaskImpl id="rake">
+        <subtasks>
+          <RakeTaskImpl description="Build imagetools-1.8.1.gem into the pkg directory" fullCommand="build" id="build" />
+          <RakeTaskImpl id="build">
+            <subtasks>
+              <RakeTaskImpl description="Generate SHA512 checksum if imagetools-1.8.1.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Remove any temporary products" fullCommand="clean" id="clean" />
+          <RakeTaskImpl description="Remove any generated files" fullCommand="clobber" id="clobber" />
+          <RakeTaskImpl description="Build and install imagetools-1.8.1.gem into system gems" fullCommand="install" id="install" />
+          <RakeTaskImpl id="install">
+            <subtasks>
+              <RakeTaskImpl description="Build and install imagetools-1.8.1.gem into system gems without network access" fullCommand="install:local" id="local" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Create tag v1.8.1 and build and push imagetools-1.8.1.gem to rubygems.org" fullCommand="release[remote]" id="release[remote]" />
           <RakeTaskImpl description="Run tests" fullCommand="test" id="test" />
           <RakeTaskImpl description="" fullCommand="default" id="default" />
           <RakeTaskImpl description="" fullCommand="release" id="release" />

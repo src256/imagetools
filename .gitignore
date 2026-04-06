@@ -9,4 +9,9 @@
 /out/
 /vendor/
 .DS_Store
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/copilot*.xml
 
